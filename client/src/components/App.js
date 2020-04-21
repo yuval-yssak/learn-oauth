@@ -9,26 +9,26 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to='/'>Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to='/about'>About</Link>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <Link to='/counter'>Counter Example</Link>
+              <Link to="/counter">Counter Redux Saga Example</Link>
             </li>
           </ul>
         </nav>
       </header>
       <main>
         <Switch>
-          <Route path='/about'>
+          <Route path="/about">
             <About />
           </Route>
-          <Route path='/counter'>
+          <Route path="/counter">
             <Counter />
           </Route>
-          <Route path='/'>
+          <Route path="/">
             <Home />
           </Route>
         </Switch>
