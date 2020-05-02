@@ -11,4 +11,14 @@ const incrementAsync = () => ({ type: ASYNC_INCREMENT })
 const decrement = () => ({ type: DECREMENT })
 const setCount = count => ({ type: SET_COUNT, payload: { newCount: count } })
 const cancelAsync = () => ({ type: CANCEL_ASYNC_CHANGE })
-export { increment, decrement, incrementAsync, setCount, cancelAsync }
+const getServerCallbackResponse = () => ({
+  type: 'GET_SERVER_CALLBACK_RESPONSE'
+})
+export {
+  increment,
+  decrement,
+  incrementAsync,
+  setCount,
+  cancelAsync,
+  getServerCallbackResponse
+}

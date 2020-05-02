@@ -58,17 +58,36 @@ function* decrementAsync() {
   }
 }
 
+async function getServerResponse() {
+  const code = new URL(location.href).searchParams.get('code')
+  console.log('code', code)
+  const a = await fetch('http://localhost:3090/auth/google/server-callback', {
+    mode: 'cors',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ code })
+  })
+  const b = await a.json()
+  return b
+}
+
 function* sagas() {
   while (true) {
-    const action = yield take([ASYNC_INCREMENT, ASYNC_DECREMENT])
-    const task = yield fork(
-      action.type === ASYNC_INCREMENT ? incrementAsync : decrementAsync
-    )
+    const action = yield take('GET_SERVER_CALLBACK_RESPONSE')
+    const b = yield call(getServerResponse)
+    yield put({ type: 'NEW_TOKEN', payload: b })
 
-    const finishAction = yield take([FINISHED_ASYNC, CANCEL_ASYNC_CHANGE])
-    if (finishAction.type === CANCEL_ASYNC_CHANGE) {
-      yield cancel(task)
-    }
+    // const action = yield take([ASYNC_INCREMENT, ASYNC_DECREMENT])
+    // const task = yield fork(
+    //   action.type === ASYNC_INCREMENT ? incrementAsync : decrementAsync
+    // )
+
+    // const finishAction = yield take([FINISHED_ASYNC, CANCEL_ASYNC_CHANGE])
+    // if (finishAction.type === CANCEL_ASYNC_CHANGE) {
+    //   yield cancel(task)
+    // }
   }
 }
 

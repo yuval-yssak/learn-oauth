@@ -13,7 +13,7 @@ import Signout from './Signout'
 import Signin from './Signin'
 import Signup from './Signup'
 import Header from './Header'
-
+import Attempt from './Attempt'
 export default function App() {
   return (
     <>
@@ -21,15 +21,16 @@ export default function App() {
         <Header />
         <main>
           <Switch>
-            <Route path='/' exact>
-              <Redirect to='/welcome' />
+            <Route path="/" exact>
+              <Redirect to="/welcome" />
             </Route>
-            <Route path='/welcome' component={Welcome} />
-            <Route path='/signup' component={Signup} />
-            <Route path='/feature' component={Feature} />
-            <Route path='/signout' component={Signout} />
-            <Route path='/signin' component={Signin} />
-            <Route path='/counter' component={Counter} />
+            <Route path="/welcome" component={Welcome} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/feature" component={Feature} />
+            <Route path="/signout" component={Signout} />
+            <Route path="/login" component={Signin} />
+            <Route path="/counter" component={Counter} />
+            <Route path="/auth" component={Attempt} />
           </Switch>
         </main>
       </Router>

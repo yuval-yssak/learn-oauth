@@ -1,5 +1,12 @@
 function auth(state = { authenticated: false }, action) {
-  return state
+  switch (action.type) {
+    case 'NEW_TOKEN': {
+      return { ...state, token: action.payload }
+    }
+    default: {
+      return state
+    }
+  }
 }
 
 export default auth
