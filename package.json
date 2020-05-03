@@ -1,0 +1,14 @@
+{
+  "name": "oauth",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:iswara108/learn-oauth.git",
+  "author": "iswara108 <iswara@sivananda.org>",
+  "license": "MIT",
+  "scripts": {
+    "start-dev": "cd server && nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
