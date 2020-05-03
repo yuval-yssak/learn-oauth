@@ -1,5 +1,17 @@
 import app from './app.js'
+import { connect } from './mongoClient.js'
 
-// Start Server
-const port = process.env.PORT || 5000
-app.listen(port, () => console.log(`Server listening on port ${port}`))
+async function startup() {
+  const port = process.env.PORT || 5000
+
+  try {
+    // Connect to MongoDB
+    await connect()
+
+    // Start Server
+    app.listen(port, () => console.log(`Server listening on port ${port}`))
+  } catch (e) {
+    console.error(e)
+  }
+}
+startup()
