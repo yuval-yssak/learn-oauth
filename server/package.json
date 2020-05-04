@@ -25,7 +25,7 @@
   "scripts": {
     "start": "nodemon src/index.js",
     "prettier": "prettier --write",
-    "test": "cross-env NODE_ENV=test mocha --timeout 15000 tests/server/**/*.test.js"
+    "test": "cross-env NODE_ENV=test mocha --timeout 5000 tests/server/**/*.test.js"
   },
   "type": "module"
 }
