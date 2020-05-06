@@ -1,8 +1,9 @@
 import passport from 'passport'
 import passportJwt from 'passport-jwt'
 import mongoDB from 'mongodb'
-
+import bcrypt from 'bcryptjs'
 import passportLocal from 'passport-local'
+
 import { JWT_SECRET } from './config.js'
 import { findUser } from './dao/users.js'
 
@@ -44,21 +45,36 @@ passport.use(
       usernameField: 'email'
     },
     async (email, password, done) => {
-      // Find the user given the email
-      const user = await findUser({ email })
+      try {
+        console.log('verifying local strategy', email, password)
+        // Find the user given the email
+        const user = await findUser({ email })
+        console.log('user is ', user)
+        // If not, handle it
+        if (!user) {
+          return done(null, false)
+        }
+        console.log('before ismatch', password, user.password)
+        // Check if the password is correct
+        const isMatch = await isValidPassword(password, user.password)
+        console.log('match is', isMatch)
+        // If not, handle it
+        if (!isMatch) {
+          return done(null, false)
+        }
 
-      // If not, handle it
-      if (!user) {
-        return done(null, false)
+        // Otherwise, return the user
+        done(null, user)
+      } catch (error) {
+        console.error(error)
+        done(error, false)
       }
-
-      // Check if the password is correct
-
-      // If not, handle it
-
-      // Otherwise, return the user
     }
   )
 )
+
+async function isValidPassword(newPassword, hashedPassword) {
+  return await bcrypt.compare(newPassword, hashedPassword)
+}
 
 export default passport

@@ -49,7 +49,9 @@ async function signUp(req, res, next) {
 
 async function signIn(req, res, next) {
   // generate token
-  console.log('called signIn')
+  const token = signToken(req.user)
+  console.log('cotroller sign in')
+  res.status(200).json({ token })
 }
 
 function secret(req, res, next) {

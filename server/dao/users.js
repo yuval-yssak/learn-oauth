@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs'
+
 let users
 
 async function init(client, dbName) {
@@ -10,7 +12,13 @@ async function findUser(filter) {
 }
 
 async function createUser(email, password) {
-  return await users.insertOne({ email, password })
+  // Generate a salt
+  const salt = await bcrypt.genSalt(10)
+
+  // Generate a password hash (salt + hash)
+  const passwordHash = await bcrypt.hash(password, salt)
+
+  return await users.insertOne({ email, password: passwordHash })
 }
 
 async function destroy() {
