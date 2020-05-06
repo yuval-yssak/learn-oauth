@@ -1,15 +1,17 @@
-import { init, createUser, findUser } from '../dao/users.js'
 import JWT from 'jsonwebtoken'
 
+import { JWT_SECRET } from '../config.js'
+
+import { init, createUser, findUser } from '../dao/users.js'
 function signToken(user) {
   return JWT.sign(
     {
       iss: 'sivananda-bahamas',
-      sub: user.id,
+      sub: user._id,
       iat: new Date().getTime(), // current time
       exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
     },
-    'a-secret-hashing-key'
+    JWT_SECRET
   )
 }
 
@@ -50,4 +52,9 @@ async function signIn(req, res, next) {
   console.log('called signIn')
 }
 
-export { signIn, signUp }
+function secret(req, res, next) {
+  console.log('am I supposed to give the secret now?')
+  res.status(200).json({ secret: 'resource' })
+}
+
+export { signIn, signUp, secret }
