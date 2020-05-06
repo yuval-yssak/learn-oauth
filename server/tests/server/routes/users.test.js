@@ -95,30 +95,30 @@ describe('Users route', function () {
     })
   })
 
-  // describe('signin', () => {
-  //   it('should return error 400 if user email and password empty', done => {
-  //     let user = {}
-  //     chai
-  //       .request(server)
-  //       .post(signin)
-  //       .send(user)
-  //       .end((err, res) => {
-  //         expect(res.status).to.be.equal(400)
-  //         done()
-  //       })
-  //   })
+  describe('signin', () => {
+    it('should return error 400 if user email and password empty', done => {
+      let user = {}
+      chai
+        .request(server)
+        .post(signin)
+        .send(user)
+        .end((err, res) => {
+          expect(res.status).to.be.equal(400)
+          done()
+        })
+    })
 
-  //   it('should return 200 and our token', done => {
-  //     chai
-  //       .request(server)
-  //       .post(signin)
-  //       .send(preSave)
-  //       .end((err, res) => {
-  //         expect(res.status).to.be.equal(200)
-  //         expect(res.body).not.to.be.empty
-  //         expect(res.body).to.have.property('token')
-  //         done()
-  //       })
-  //   })
-  // })
+    it('should return 200 and our token', done => {
+      chai
+        .request(server)
+        .post(signin)
+        .send(preSave)
+        .end((err, res) => {
+          expect(res.status).to.be.equal(200)
+          expect(res.body).not.to.be.empty
+          expect(res.body).to.have.property('token')
+          done()
+        })
+    })
+  })
 })
