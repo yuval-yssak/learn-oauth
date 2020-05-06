@@ -70,29 +70,30 @@ describe('Users route', function () {
     })
   })
 
-  // describe('secrete', () => {
-  // it('should return status 401', done => {
-  //   chai
-  //     .request(server)
-  //     .get(secret)
-  //     .end((err, res) => {
-  //       expect(res.status).to.equal(401)
-  //       expect(res.body).to.be.empty
-  //       done()
-  //     })
-  // })
-  // it('should return status 200', done => {
-  //   chai
-  //     .request(server)
-  //     .get(secret)
-  //     .set('Authorization', token)
-  //     .end((err, res) => {
-  //       expect(res.status).to.equal(200)
-  //       expect(res.body).to.deep.equal({ secret: 'resource' })
-  //       done()
-  //     })
-  // })
-  // })
+  describe('secret', () => {
+    it('should return status 401', done => {
+      chai
+        .request(server)
+        .get(secret)
+        .end((err, res) => {
+          expect(res.status).to.equal(401)
+          expect(res.body).to.be.empty
+          done()
+        })
+    })
+    it('should return status 200', done => {
+      console.log('sending token', token)
+      chai
+        .request(server)
+        .get(secret)
+        .set('authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.equal(200)
+          expect(res.body).to.deep.equal({ secret: 'resource' })
+          done()
+        })
+    })
+  })
 
   // describe('signin', () => {
   //   it('should return error 400 if user email and password empty', done => {

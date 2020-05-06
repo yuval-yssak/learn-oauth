@@ -1,4 +1,4 @@
 const dbName = 'auth'
 const DBUrl = 'mongodb://localhost'
-
-export { dbName, DBUrl }
+const JWT_SECRET = ''
+export { dbName, DBUrl, JWT_SECRET }
