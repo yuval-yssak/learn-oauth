@@ -10,6 +10,7 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "express-promise-router": "^3.0.3",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.7",
     "nodemon": "^2.0.3",
     "passport": "^0.4.1",
