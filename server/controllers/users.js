@@ -1,8 +1,8 @@
 import JWT from 'jsonwebtoken'
 
 import { JWT_SECRET } from '../config.js'
+import { createUser, createGoogleUser, findUser } from '../dao/users.js'
 
-import { init, createUser, findUser } from '../dao/users.js'
 function signToken(user) {
   return JWT.sign(
     {
@@ -23,7 +23,7 @@ async function signUp(req, res, next) {
     const { email, password } = req.value.body
 
     // Check if there is a user with the same email
-    const foundUser = await findUser({ email })
+    const foundUser = await findUser({ 'local.email': email })
     console.log('founduser is', email, foundUser)
     if (foundUser) {
       return res.status(403).json({ error: 'Email is already in use' })
@@ -54,9 +54,29 @@ async function signIn(req, res, next) {
   res.status(200).json({ token })
 }
 
+async function googleOauth(req, res, next) {
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log(req)
+
+  const createResult = await createGoogleUser(req.user.id)
+  if (createResult.result.n !== 1)
+    throw new Error('did not insert one record for ' + req.body)
+
+  const [newUser] = createResult.ops
+  // generate token
+  const token = signToken(newUser)
+  console.log('cotroller sign in')
+  res.status(200).json({ token })
+}
+
 function secret(req, res, next) {
   console.log('am I supposed to give the secret now?')
   res.status(200).json({ secret: 'resource' })
 }
 
-export { signIn, signUp, secret }
+export { signIn, signUp, googleOauth, secret }

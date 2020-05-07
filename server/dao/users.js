@@ -18,13 +18,19 @@ async function createUser(email, password) {
   // Generate a password hash (salt + hash)
   const passwordHash = await bcrypt.hash(password, salt)
 
-  return await users.insertOne({ email, password: passwordHash })
+  return await users.insertOne({
+    method: 'local',
+    local: { email, password: passwordHash }
+  })
 }
 
+async function createGoogleUser(id) {
+  return await users.insertOne({ method: 'google', google: { id } })
+}
 async function destroy() {
   if (process.env.NODE_ENV !== 'test')
     throw new Error('will not destoy collection on non-test environment')
   return await users.drop()
 }
 
-export { init, findUser, createUser, destroy }
+export { init, findUser, createUser, createGoogleUser, destroy }

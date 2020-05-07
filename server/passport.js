@@ -3,13 +3,28 @@ import passportJwt from 'passport-jwt'
 import mongoDB from 'mongodb'
 import bcrypt from 'bcryptjs'
 import passportLocal from 'passport-local'
-
-import { JWT_SECRET } from './config.js'
+import GooglePlusTokenStrategy from 'passport-google-plus-token'
+import { JWT_SECRET, google } from './config.js'
 import { findUser } from './dao/users.js'
 
 const { ObjectID } = mongoDB
 const { Strategy: JwtStrategy, ExtractJwt } = passportJwt
 const { Strategy: LocalStrategy } = passportLocal
+
+passport.use(
+  'googleToken',
+  new GooglePlusTokenStrategy(
+    {
+      clientID: google.clientID,
+      clientSecret: google.clientSecret,
+      passReqToCallback: true
+    },
+    async (req, accessToken, refreshToken, profile, done) => {
+      console.log('in google passport', accessToken, refreshToken, profile)
+      done(null, profile)
+    }
+  )
+)
 
 // JSON WEB TOKENS STRATEGY
 passport.use(
@@ -48,15 +63,15 @@ passport.use(
       try {
         console.log('verifying local strategy', email, password)
         // Find the user given the email
-        const user = await findUser({ email })
+        const user = await findUser({ 'local.email': email })
         console.log('user is ', user)
         // If not, handle it
         if (!user) {
           return done(null, false)
         }
-        console.log('before ismatch', password, user.password)
+        console.log('before ismatch', password, user.local.password)
         // Check if the password is correct
-        const isMatch = await isValidPassword(password, user.password)
+        const isMatch = await isValidPassword(password, user.local.password)
         console.log('match is', isMatch)
         // If not, handle it
         if (!isMatch) {
