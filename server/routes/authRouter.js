@@ -3,7 +3,7 @@ import passport from 'passport'
 
 import passportConfig from '../passport.js'
 import { validateBody, schemas } from '../helpers/routeHelpers.js'
-import { signIn, signUp, secret } from '../controllers/users.js'
+import { signIn, signUp, googleOauth, secret } from '../controllers/users.js'
 
 const passportSignIn = passport.authenticate('local', { session: false })
 const passportJWT = passport.authenticate('jwt', { session: false })
@@ -22,6 +22,29 @@ router.post('/signin', logRoute, validateBody(schema), passportSignIn, signIn)
 
 router.get('/signout', logRoute)
 
-router.get('/secret', passportJWT, secret)
+router.post(
+  '/google',
+  (req, res, next) => {
+    console.log('posted to google')
+    next()
+  },
+  passport.authenticate('googleToken', { session: false }),
+  googleOauth
+)
+router.get(
+  '/secret',
+  (req, res, next) => {
+    console.log('get secret')
+    next()
+  },
 
+  passportJWT,
+  (req, res, next) => {
+    console.log('get secret after validation')
+    next()
+  },
+  secret
+)
+
+router.get('/*', logRoute)
 export default router
